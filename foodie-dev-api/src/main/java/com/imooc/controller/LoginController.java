@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author gengbin
  * @date 2021/1/14
  */
-@Api(value = "注册登录", tags = {"用于注册登录的相关接口"})
+@Api(value = "注册登录", tags = {"注册登录的相关接口"})
 @RestController
 @RequestMapping("login")
 public class LoginController {
