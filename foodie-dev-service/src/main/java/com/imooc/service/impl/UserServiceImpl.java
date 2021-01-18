@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private Users convertUser(UserBO userBO) {
-        String userId = sid.nextShort();
+        String userId = sid.next();
         Users user = new Users();
         user.setId(userId);
         user.setUsername(userBO.getUsername());
