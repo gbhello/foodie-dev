@@ -23,8 +23,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Api(value = "注册登录", tags = {"注册登录的相关接口"})
 @RestController
-@RequestMapping("login")
-public class LoginController {
+@RequestMapping("passport")
+public class PassportController {
 
     @Autowired
     private UserService userService;

@@ -1,4 +1,4 @@
-package com.imooc.controller.config;
+package com.imooc.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
