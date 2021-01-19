@@ -29,9 +29,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean findUsernameIsExist(String username) {
-        // Example userExample = new Example(Users.class);
-        // Example.Criteria userExampleCriteria = userExample.createCriteria();
-        // usersMapper.selectOneByExample()
+        // try {
+        //     Thread.sleep(1000);
+        // } catch (InterruptedException e) {
+        //     e.printStackTrace();
+        // }
         Users user = new Users();
         user.setUsername(username);
         Users resultUser = usersMapper.selectOne(user);
