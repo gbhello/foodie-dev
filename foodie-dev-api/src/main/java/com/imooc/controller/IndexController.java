@@ -1,15 +1,21 @@
 package com.imooc.controller;
 
+import com.imooc.consts.ValidationErrorCode;
 import com.imooc.consts.YesOrNo;
 import com.imooc.pojo.Carousel;
 import com.imooc.pojo.Category;
+import com.imooc.pojo.vo.CategoryVO;
+import com.imooc.pojo.vo.NewItemsVO;
 import com.imooc.service.CategoryService;
 import com.imooc.service.impl.CarouselService;
 import com.imooc.utils.CommonResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -32,8 +38,8 @@ public class IndexController {
     @ApiOperation(value = "获取首页轮播图列表", notes = "获取首页轮播图列表", httpMethod = "GET")
     @GetMapping("/getCarouselList")
     public CommonResult getCarouselList() {
-        List<Carousel> carouselList = carouselService.queryAll(YesOrNo.YES.type);
-        return CommonResult.ok(carouselList);
+            List<Carousel> carouselList = carouselService.queryAll(YesOrNo.YES.type);
+            return CommonResult.ok(carouselList);
     }
 
     /**
@@ -48,5 +54,23 @@ public class IndexController {
     public CommonResult getCategoryList() {
         List<Category> categoryList = categoryService.getAllRootLevelCategory();
         return CommonResult.ok(categoryList);
+    }
+
+    @ApiOperation(value = "获取商品子分类", notes = "获取商品子分类", httpMethod = "GET")
+    @GetMapping("/getSubCategoryList/{rootCategoryId}")
+    public CommonResult getSubCategoryList(@ApiParam(name = "rootCategoryId", value = "一级分类id", required = true)
+                                           @PathVariable Integer rootCategoryId) {
+        Assert.notNull(rootCategoryId, ValidationErrorCode.PARAM_EMPTY);
+        List<CategoryVO> categoryList = categoryService.getSubCategoryList(rootCategoryId);
+        return CommonResult.ok(categoryList);
+    }
+
+    @ApiOperation(value = "获取每个一级分类下的最新6条商品数据", notes = "获取每个一级分类下的最新6条商品数据", httpMethod = "GET")
+    @GetMapping("/getSixNewItems/{rootCategoryId}")
+    public CommonResult getSixNewItems(@ApiParam(name = "rootCategoryId", value = "一级分类id", required = true)
+                                       @PathVariable Integer rootCategoryId) {
+        Assert.notNull(rootCategoryId, ValidationErrorCode.PARAM_EMPTY);
+        List<NewItemsVO> newItemsVOList = categoryService.getSixNewItems(rootCategoryId);
+        return CommonResult.ok(newItemsVOList);
     }
 }

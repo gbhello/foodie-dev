@@ -2,6 +2,8 @@ package com.imooc.service.impl;
 
 import com.imooc.mapper.CategoryMapper;
 import com.imooc.pojo.Category;
+import com.imooc.pojo.vo.CategoryVO;
+import com.imooc.pojo.vo.NewItemsVO;
 import com.imooc.service.CategoryService;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -26,5 +28,17 @@ public class CategoryServiceImpl implements CategoryService {
         List<Category> categoryList = categoryMapper.selectByExample(example);
 
         return categoryList;
+    }
+
+    @Override
+    public List<CategoryVO> getSubCategoryList(Integer rootCategoryId) {
+        List<CategoryVO> categoryVOList = categoryMapper.getSubCategoryList(rootCategoryId);
+        return categoryVOList;
+    }
+
+    @Override
+    public List<NewItemsVO> getSixNewItems(Integer rootCategoryId) {
+        List<NewItemsVO> newItemsVOList = categoryMapper.getSixNewItems(rootCategoryId);
+        return newItemsVOList;
     }
 }
