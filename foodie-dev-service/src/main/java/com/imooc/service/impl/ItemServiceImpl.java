@@ -1,20 +1,21 @@
 package com.imooc.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.imooc.enums.CommentLevel;
-import com.imooc.mapper.ItemsImgMapper;
-import com.imooc.mapper.ItemsMapper;
-import com.imooc.mapper.ItemsParamMapper;
-import com.imooc.mapper.ItemsSpecMapper;
-import com.imooc.pojo.Items;
-import com.imooc.pojo.ItemsImg;
-import com.imooc.pojo.ItemsParam;
-import com.imooc.pojo.ItemsSpec;
+import com.imooc.mapper.*;
+import com.imooc.pojo.*;
 import com.imooc.pojo.vo.CommentLevelCountsVO;
+import com.imooc.pojo.vo.ItemCommentVO;
+import com.imooc.pojo.vo.SearchItemsVO;
 import com.imooc.service.ItemService;
+import com.imooc.utils.DesensitizationUtil;
+import com.imooc.utils.PagedGridResult;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -31,6 +32,8 @@ public class ItemServiceImpl implements ItemService {
     private ItemsSpecMapper itemsSpecMapper;
     @Resource
     private ItemsParamMapper itemsParamMapper;
+    @Resource
+    private ItemsCommentsMapper itemsCommentsMapper;
 
     @Override
     public Items getItemById(String itemId) {
@@ -81,9 +84,65 @@ public class ItemServiceImpl implements ItemService {
         return commentLevelCountsVO;
     }
 
-    private Integer getCommentCounts(String itemId, Integer level) {
+    @Override
+    public PagedGridResult getPagedComments(String itemId, Integer level, Integer pageNum, Integer pageSize) {
+        HashMap<String, Object> paramMap = new HashMap<>();
+        paramMap.put("itemId", itemId);
+        paramMap.put("level", level);
 
-        return null;
+        PageHelper.startPage(pageNum, pageSize);
+        List<ItemCommentVO> itemCommentVOList = itemsMapper.getItemComments(paramMap);
+
+        PageInfo<ItemCommentVO> itemCommentVOPageInfo = new PageInfo<>(itemCommentVOList);
+
+        //对用户名进行脱敏
+        for (ItemCommentVO vo : itemCommentVOList) {
+            vo.setNickname(DesensitizationUtil.commonDisplay(vo.getNickname()));
+        }
+
+        return setterPagedGrid(itemCommentVOList, pageNum);
+    }
+
+    @Override
+    public PagedGridResult searchItems(String keywords, String sort, Integer pageNum, Integer pageSize) {
+        HashMap<String, Object> paramMap = new HashMap<>();
+        paramMap.put("keywords", keywords);
+        paramMap.put("sort", sort);
+
+        PageHelper.startPage(pageNum, pageSize);
+        List<SearchItemsVO> searchItemsVOList = itemsMapper.searchItems(paramMap);
+        return setterPagedGrid(searchItemsVOList, pageNum);
+    }
+
+    @Override
+    public PagedGridResult getItemByCatId(Integer catId, Integer sort, Integer pageNum, Integer pageSize) {
+        HashMap<String, Object> paramMap = new HashMap<>();
+        paramMap.put("catId", catId);
+        paramMap.put("sort", sort);
+
+        PageHelper.startPage(pageNum, pageSize);
+        List<SearchItemsVO> searchItemsVOList = itemsMapper.searchItemsByThirdCatId(paramMap);
+        return setterPagedGrid(searchItemsVOList, pageNum);
+    }
+
+    private PagedGridResult setterPagedGrid(List<?> list, Integer pageNum) {
+        PageInfo<?> itemCommentVoPageInfo = new PageInfo<>(list);
+        PagedGridResult pagedGridResult = new PagedGridResult();
+        pagedGridResult.setPage(pageNum);
+        pagedGridResult.setRows(list);
+        pagedGridResult.setTotal(itemCommentVoPageInfo.getPages());
+        pagedGridResult.setRecords(itemCommentVoPageInfo.getTotal());
+
+        return pagedGridResult;
+    }
+
+    private Integer getCommentCounts(String itemId, Integer level) {
+        ItemsComments itemsComments = new ItemsComments();
+        itemsComments.setItemId(itemId);
+        if (level != null) {
+            itemsComments.setCommentLevel(level);
+        }
+        return itemsCommentsMapper.selectCount(itemsComments);
     }
 
 }

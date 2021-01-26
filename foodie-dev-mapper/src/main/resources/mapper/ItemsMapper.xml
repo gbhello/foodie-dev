@@ -1,18 +1,93 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.imooc.mapper.ItemsMapper" >
-  <resultMap id="BaseResultMap" type="com.imooc.pojo.Items" >
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="item_name" property="itemName" jdbcType="VARCHAR" />
-    <result column="cat_id" property="catId" jdbcType="INTEGER" />
-    <result column="root_cat_id" property="rootCatId" jdbcType="INTEGER" />
-    <result column="sell_counts" property="sellCounts" jdbcType="INTEGER" />
-    <result column="on_off_status" property="onOffStatus" jdbcType="INTEGER" />
-    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
-    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
-    <result column="content" property="content" jdbcType="LONGVARCHAR" />
-  </resultMap>
+<mapper namespace="com.imooc.mapper.ItemsMapper">
+    <resultMap id="BaseResultMap" type="com.imooc.pojo.Items">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="item_name" property="itemName" jdbcType="VARCHAR"/>
+        <result column="cat_id" property="catId" jdbcType="INTEGER"/>
+        <result column="root_cat_id" property="rootCatId" jdbcType="INTEGER"/>
+        <result column="sell_counts" property="sellCounts" jdbcType="INTEGER"/>
+        <result column="on_off_status" property="onOffStatus" jdbcType="INTEGER"/>
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
+        <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
+        <result column="content" property="content" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <select id="getItemComments" resultType="com.imooc.pojo.vo.ItemCommentVO">
+        SELECT ic.comment_level AS commentLevel,
+               ic.content       AS content,
+               ic.sepc_name     AS specName,
+               ic.created_time  AS createdTime,
+               u.face           AS userFace,
+               u.nickname       AS nickname
+        FROM items_comments AS ic
+                 LEFT JOIN users AS u
+                           ON ic.user_id = u.id
+        WHERE ic.item_id = #{paramMap.itemId}
+          AND ic.comment_level = #{paramMap.level}
+    </select>
+    <!--k:默认，代表默认排序，根据name-->
+    <!--c:根据销量排序-->
+    <!--p:根据价格排序-->
+    <select id="searchItems" resultType="com.imooc.pojo.vo.SearchItemsVO">
+        SELECT i.id AS itemId,
+        i.item_name AS itemName,
+        i.sell_counts AS sellCounts,
+        ii.url AS imgUrl,
+        tempSpec.price_discount AS price
+        FROM items i
+        LEFT JOIN items_img ii
+        ON i.id = ii.item_id
+        LEFT JOIN
+        (SELECT item_id,MIN(price_discount) AS price_discount FROM items_spec GROUP BY item_id) tempSpec
+        ON i.id = tempSpec.item_id
+        WHERE ii.is_main = 1
+        <if test="paramMap.keywords != null and paramMap.keywords != ''">
+            AND i.item_name like '%${paramMap.keywords}%'
+        </if>
+        ORDER BY
+        <choose>
+            <when test="paramMap.sort == &quot;c&quot;">
+                i.sell_counts DESC
+            </when>
+            <when test="paramMap.sort == &quot;p&quot;">
+                tempSpec.price_discount ASC
+            </when>
+            <otherwise>
+                i.item_name ASC
+            </otherwise>
+        </choose>
+    </select>
+    <select id="searchItemsByThirdCatId" resultType="com.imooc.pojo.vo.SearchItemsVO">
+        SELECT i.id AS itemId,
+        i.item_name AS itemName,
+        i.sell_counts AS sellCounts,
+        ii.url AS imgUrl,
+        tempSpec.price_discount AS price
+        FROM items i
+        LEFT JOIN items_img ii
+        ON i.id = ii.item_id
+        LEFT JOIN
+        (SELECT item_id,MIN(price_discount) AS price_discount FROM items_spec GROUP BY item_id) tempSpec
+        ON i.id = tempSpec.item_id
+        WHERE ii.is_main = 1
+        AND i.cat_id = #{paramMap.catId}
+        <if test="paramMap.keywords != null and paramMap.keywords != ''">
+            AND i.item_name like '%${paramMap.keywords}%'
+        </if>
+        ORDER BY
+        <choose>
+            <when test="paramMap.sort == &quot;c&quot;">
+                i.sell_counts DESC
+            </when>
+            <when test="paramMap.sort == &quot;p&quot;">
+                tempSpec.price_discount ASC
+            </when>
+            <otherwise>
+                i.item_name ASC
+            </otherwise>
+        </choose>
+    </select>
 </mapper>

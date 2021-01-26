@@ -30,4 +30,5 @@ public abstract class BusinessConsts {
      */
     public static final Integer INFO_TAKE_TIME = 1000;
 
+    public static final Integer DEFAULT_PAGE_SIZE = 10;
 }
