@@ -4,9 +4,11 @@ import com.imooc.mapper.base.MyMapper;
 import com.imooc.pojo.Items;
 import com.imooc.pojo.vo.ItemCommentVO;
 import com.imooc.pojo.vo.SearchItemsVO;
+import com.imooc.pojo.vo.ShopCartVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,4 +41,12 @@ public interface ItemsMapper extends MyMapper<Items> {
      * @return
      */
     List<SearchItemsVO> searchItemsByThirdCatId(@Param("paramMap") HashMap<String, Object> paramMap);
+
+    /**
+     * 根据规格id查询商品
+     *
+     * @param specIdList
+     * @return
+     */
+    List<ShopCartVO> getItemsBySpecIdList(@Param("specIdList") ArrayList<String> specIdList);
 }

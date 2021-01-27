@@ -86,7 +86,7 @@ public interface ItemService {
      * @param pageSize
      * @return
      */
-    PagedGridResult getItemByCatId(Integer catId, Integer sort, Integer pageNum, Integer pageSize);
+    PagedGridResult getItemByCatId(Integer catId, String sort, Integer pageNum, Integer pageSize);
 
     /**
      * 根据规格id获取商品

@@ -8,6 +8,7 @@ import com.imooc.pojo.*;
 import com.imooc.pojo.vo.CommentLevelCountsVO;
 import com.imooc.pojo.vo.ItemCommentVO;
 import com.imooc.pojo.vo.SearchItemsVO;
+import com.imooc.pojo.vo.ShopCartVO;
 import com.imooc.service.ItemService;
 import com.imooc.utils.DesensitizationUtil;
 import com.imooc.utils.PagedGridResult;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -44,25 +47,25 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemsImg> getItemImgList(String itemId) {
         Example example = new Example(ItemsImg.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("item_id", itemId);
+        criteria.andEqualTo("itemId", itemId);
 
         return itemsImgMapper.selectByExample(example);
     }
 
     @Override
     public List<ItemsSpec> getItemSpecList(String itemId) {
-        Example example = new Example(ItemsImg.class);
+        Example example = new Example(ItemsSpec.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("item_id", itemId);
+        criteria.andEqualTo("itemId", itemId);
 
         return itemsSpecMapper.selectByExample(example);
     }
 
     @Override
     public ItemsParam getItemParam(String itemId) {
-        Example example = new Example(ItemsImg.class);
+        Example example = new Example(ItemsParam.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("item_id", itemId);
+        criteria.andEqualTo("itemId", itemId);
 
         return itemsParamMapper.selectOneByExample(example);
     }
@@ -115,7 +118,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public PagedGridResult getItemByCatId(Integer catId, Integer sort, Integer pageNum, Integer pageSize) {
+    public PagedGridResult getItemByCatId(Integer catId, String sort, Integer pageNum, Integer pageSize) {
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("catId", catId);
         paramMap.put("sort", sort);
@@ -123,6 +126,14 @@ public class ItemServiceImpl implements ItemService {
         PageHelper.startPage(pageNum, pageSize);
         List<SearchItemsVO> searchItemsVOList = itemsMapper.searchItemsByThirdCatId(paramMap);
         return setterPagedGrid(searchItemsVOList, pageNum);
+    }
+
+    @Override
+    public List<ShopCartVO> getItemBySpecIds(String itemSpecIds) {
+        String[] idArray = itemSpecIds.split(",");
+        ArrayList<String> specIdList = new ArrayList<>();
+        Collections.addAll(specIdList, idArray);
+        return itemsMapper.getItemsBySpecIdList(specIdList);
     }
 
     private PagedGridResult setterPagedGrid(List<?> list, Integer pageNum) {
