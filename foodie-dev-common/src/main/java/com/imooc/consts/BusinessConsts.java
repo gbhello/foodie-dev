@@ -31,4 +31,12 @@ public abstract class BusinessConsts {
     public static final Integer INFO_TAKE_TIME = 1000;
 
     public static final Integer DEFAULT_PAGE_SIZE = 10;
+    /**
+     * 收件人名称最大长度
+     */
+    public static final int MAX_RECEIVER_LENGTH = 12;
+
+    public class Order {
+        public static final String UNSUPPORT_PAY_TYPE = "支付方式不支持！";
+    }
 }

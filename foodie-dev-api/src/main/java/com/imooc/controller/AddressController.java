@@ -1,5 +1,6 @@
 package com.imooc.controller;
 
+import com.imooc.consts.BusinessConsts;
 import com.imooc.consts.ValidationErrorCode;
 import com.imooc.pojo.UserAddress;
 import com.imooc.pojo.bo.AddressBO;
@@ -8,9 +9,8 @@ import com.imooc.utils.CommonResult;
 import com.imooc.utils.MobileEmailUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,21 +44,55 @@ public class AddressController {
         return CommonResult.ok();
     }
 
+    @ApiOperation(value = "修改地址", notes = "修改地址", httpMethod = "POST")
+    @PostMapping("/updateAddress")
+    public CommonResult updateAddress(@RequestBody AddressBO addressBO) {
+        if (addressBO == null || org.apache.commons.lang3.StringUtils.isBlank(addressBO.getAddressId())) {
+            return CommonResult.errorMsg(ValidationErrorCode.PARAM_EMPTY);
+        }
+        CommonResult checkResult = checkAddress(addressBO);
+        if (checkResult.getStatus() != 200) {
+            return checkResult;
+        }
+        addressService.updateUserAddress(addressBO);
+        return CommonResult.ok();
+    }
+
+    @ApiOperation(value = "删除地址", notes = "删除地址", httpMethod = "POST")
+    @PostMapping("/deleteAddress")
+    public CommonResult deleteAddress(@RequestParam String addressId) {
+        if (StringUtils.isEmpty(addressId)) {
+            return CommonResult.errorMsg(ValidationErrorCode.PARAM_EMPTY);
+        }
+        addressService.deleteAddress(addressId);
+        return CommonResult.ok();
+    }
+
     private CommonResult checkAddress(AddressBO addressBO) {
         String receiver = addressBO.getReceiver();
-        Assert.hasText(receiver, ValidationErrorCode.Address.RECEIVER_EMPTY);
-        Assert.isTrue(receiver.length() > 12, ValidationErrorCode.Address.RECEIVER_TOO_LONG);
+        if (StringUtils.isBlank(receiver)) {
+            return CommonResult.errorMsg(ValidationErrorCode.Address.RECEIVER_EMPTY);
+        }
+        if (receiver.length() > BusinessConsts.MAX_RECEIVER_LENGTH) {
+            return CommonResult.errorMsg(ValidationErrorCode.Address.RECEIVER_TOO_LONG);
+        }
 
         String mobile = addressBO.getMobile();
-        Assert.hasText(mobile, ValidationErrorCode.Mobile.MOBILE_EMPTY);
-        Assert.isTrue(MobileEmailUtils.checkMobileIsOk(mobile), ValidationErrorCode.Mobile.MOBILE_ILLEGAL);
+        if (StringUtils.isBlank(mobile)) {
+            return CommonResult.errorMsg(ValidationErrorCode.Mobile.MOBILE_EMPTY);
+        }
+        if (!MobileEmailUtils.checkMobileIsOk(mobile)) {
+            return CommonResult.errorMsg(ValidationErrorCode.Mobile.MOBILE_ILLEGAL);
+        }
 
         String province = addressBO.getProvince();
         String city = addressBO.getCity();
         String district = addressBO.getDistrict();
         String detail = addressBO.getDetail();
 
-        Assert.isTrue(StringUtils.isEmpty(province) || StringUtils.isEmpty(city) || StringUtils.isEmpty(district) || StringUtils.isEmpty(detail), ValidationErrorCode.Address.ADDRESS_EMPTY);
+        if (StringUtils.isEmpty(province) || StringUtils.isEmpty(city) || StringUtils.isEmpty(district) || StringUtils.isEmpty(detail)) {
+            return CommonResult.errorMsg(ValidationErrorCode.Address.ADDRESS_EMPTY);
+        }
         return CommonResult.ok();
     }
 }

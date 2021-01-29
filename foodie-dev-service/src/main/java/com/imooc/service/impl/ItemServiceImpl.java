@@ -136,6 +136,11 @@ public class ItemServiceImpl implements ItemService {
         return itemsMapper.getItemsBySpecIdList(specIdList);
     }
 
+    @Override
+    public List<ItemsSpec> getItemSpecBySpecIdList(List<String> itemSpecIdList) {
+        return null;
+    }
+
     private PagedGridResult setterPagedGrid(List<?> list, Integer pageNum) {
         PageInfo<?> itemCommentVoPageInfo = new PageInfo<>(list);
         PagedGridResult pagedGridResult = new PagedGridResult();

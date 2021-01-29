@@ -24,4 +24,26 @@ public interface AddressService {
      * @param addressBO
      */
     void addUserAddress(AddressBO addressBO);
+
+    /**
+     * 更新地址
+     *
+     * @param addressBO
+     */
+    void updateUserAddress(AddressBO addressBO);
+
+    /**
+     * 删除地址
+     *
+     * @param userId
+     */
+    void deleteAddress(String userId);
+
+    /**
+     * 根据addressId获取地址信息
+     *
+     * @param addressId
+     * @return
+     */
+    UserAddress getUserAddress(String addressId);
 }

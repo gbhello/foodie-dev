@@ -89,10 +89,18 @@ public interface ItemService {
     PagedGridResult getItemByCatId(Integer catId, String sort, Integer pageNum, Integer pageSize);
 
     /**
-     * 根据规格id获取商品
+     * 根据规格id获取购物车商品
      *
      * @param itemSpecIds
      * @return
      */
     List<ShopCartVO> getItemBySpecIds(String itemSpecIds);
+
+    /**
+     * 根据规格id获取商品信息
+     *
+     * @param itemSpecIdList
+     * @return
+     */
+    List<ItemsSpec> getItemSpecBySpecIdList(List<String> itemSpecIdList);
 }
