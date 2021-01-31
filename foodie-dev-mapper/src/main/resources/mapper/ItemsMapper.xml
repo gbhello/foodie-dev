@@ -15,6 +15,26 @@
         <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
         <result column="content" property="content" jdbcType="LONGVARCHAR"/>
     </resultMap>
+    <sql id="Base_Column_List">
+    id,item_name,cat_id,root_cat_id,sell_counts,on_off_status,created_time,updated_time,content
+  </sql>
+    <update id="decreaseItemSpecStock">
+        UPDATE
+        items_spec
+        <foreach collection="itemSpecIdStockMap" index="key" item="value">
+            SET stock = stock - #{value}
+            WHERE id = #{key}
+        </foreach>
+    </update>
+    <update id="increaseItemSpecStock">
+        UPDATE
+        items_spec
+
+        <foreach collection="itemSpecIdStockMap" index="key" item="value">
+            SET stock = stock - #{value}
+            WHERE id = #{key}
+        </foreach>
+    </update>
     <select id="getItemComments" resultType="com.imooc.pojo.vo.ItemCommentVO">
         SELECT ic.comment_level AS commentLevel,
                ic.content       AS content,
@@ -107,6 +127,26 @@
         WhERE ii.is_main = 1 AND
         spec.id IN
         <foreach collection="specIdList" index="index" item="specId" open="(" separator="," close=")">
+            #{specId}
+        </foreach>
+    </select>
+    <select id="selectItemByIdList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM items
+        WHERE id IN
+        <foreach collection="itemIdList" index="index" item="itemId" open="(" close=")" separator=",">
+            #{itemId}
+        </foreach>
+    </select>
+    <select id="selectItemSpecItemName" resultType="com.imooc.pojo.vo.ItemSpecItemNameVO">
+        SELECT
+        spec.id AS itemSpecId,
+        i.item_name AS itemName,
+        FROM items_spec AS spec
+        LEFT JOIN items AS i
+        ON spec.item_id = i.id
+        <foreach collection="itemSpecIdList" item="specId" index="index" open="(" close=")" separator=",">
             #{specId}
         </foreach>
     </select>

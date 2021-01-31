@@ -36,7 +36,9 @@ public abstract class BusinessConsts {
      */
     public static final int MAX_RECEIVER_LENGTH = 12;
 
-    public class Order {
+    public static class Order {
         public static final String UNSUPPORT_PAY_TYPE = "支付方式不支持！";
+        public static final Integer INCRESE_ITEM_SPEC_STOCK = 1;
+        public static final Integer DECREASE_ITEM_SPEC_STOCK = 2;
     }
 }

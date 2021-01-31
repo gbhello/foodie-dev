@@ -3,6 +3,9 @@ package com.imooc.mapper;
 import com.imooc.mapper.base.MyMapper;
 import com.imooc.pojo.ItemsImg;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author gengbin
@@ -10,4 +13,11 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface ItemsImgMapper extends MyMapper<ItemsImg> {
+    /**
+     * 获取商品主图片列表
+     *
+     * @param itemIdList
+     * @return
+     */
+    List<String> selectMainImgUrlByItemIdList(@Param("itemIdList") List<String> itemIdList);
 }

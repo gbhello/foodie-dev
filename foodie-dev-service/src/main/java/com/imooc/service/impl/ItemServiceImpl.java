@@ -5,10 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.imooc.enums.CommentLevel;
 import com.imooc.mapper.*;
 import com.imooc.pojo.*;
-import com.imooc.pojo.vo.CommentLevelCountsVO;
-import com.imooc.pojo.vo.ItemCommentVO;
-import com.imooc.pojo.vo.SearchItemsVO;
-import com.imooc.pojo.vo.ShopCartVO;
+import com.imooc.pojo.vo.*;
 import com.imooc.service.ItemService;
 import com.imooc.utils.DesensitizationUtil;
 import com.imooc.utils.PagedGridResult;
@@ -16,10 +13,7 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author gengbin
@@ -138,8 +132,33 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemsSpec> getItemSpecBySpecIdList(List<String> itemSpecIdList) {
-        return null;
+        return itemsSpecMapper.getItemSpecBySpecIdList(itemSpecIdList);
     }
+
+    @Override
+    public List<Items> getItemByIdList(List<String> itemIdList) {
+        return itemsMapper.selectItemByIdList(itemIdList);
+    }
+
+    @Override
+    public List<String> getItemMainImgByItemIdList(List<String> itemIdList) {
+        return itemsImgMapper.selectMainImgUrlByItemIdList(itemIdList);
+    }
+
+    @Override
+    public void updateItemSpecStock(HashMap<String, Integer> itemSpecIdStockMap, Integer updateType) {
+        if (updateType == 1) {
+            itemsMapper.increaseItemSpecStock(itemSpecIdStockMap);
+        } else {
+            itemsMapper.decreaseItemSpecStock(itemSpecIdStockMap);
+        }
+    }
+
+    @Override
+    public ItemSpecItemNameVO getItemSpecItemNameVO(List<String> itemSpecIdList) {
+        return itemsMapper.selectItemSpecItemName(itemSpecIdList);
+    }
+
 
     private PagedGridResult setterPagedGrid(List<?> list, Integer pageNum) {
         PageInfo<?> itemCommentVoPageInfo = new PageInfo<>(list);
