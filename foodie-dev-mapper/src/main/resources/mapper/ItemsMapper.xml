@@ -130,22 +130,15 @@
             #{specId}
         </foreach>
     </select>
-    <select id="selectItemByIdList" resultMap="BaseResultMap">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM items
-        WHERE id IN
-        <foreach collection="itemIdList" index="index" item="itemId" open="(" close=")" separator=",">
-            #{itemId}
-        </foreach>
-    </select>
-    <select id="selectItemSpecItemName" resultType="com.imooc.pojo.vo.ItemSpecItemNameVO">
+    <select id="selectItemSpecItemName" resultType="com.imooc.pojo.vo.ItemSpecIdItemNameVO">
         SELECT
         spec.id AS itemSpecId,
         i.item_name AS itemName,
         FROM items_spec AS spec
         LEFT JOIN items AS i
         ON spec.item_id = i.id
+        WHERE
+        spec.id IN
         <foreach collection="itemSpecIdList" item="specId" index="index" open="(" close=")" separator=",">
             #{specId}
         </foreach>

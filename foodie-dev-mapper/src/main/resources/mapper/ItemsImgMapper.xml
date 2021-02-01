@@ -13,10 +13,12 @@
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
         <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
     </resultMap>
-    <select id="selectMainImgUrlByItemIdList" resultType="java.lang.String">
+    <select id="selectMainImgUrlByItemSpecIdList" resultType="java.lang.String">
         SELECT url
-        FROM items_img
-        WHERE is_main = 1 AND item_id IN
+        FROM items_img AS ii
+        LEFT JOIN items_spec AS spec
+        ON ii.item_id = spec.item_id
+        WHERE ii.is_main = 1 AND spec.item_id IN
         <foreach collection="itemIdList" separator="," item="itemId" open="(" close=")" index="index">
             #{itemId}
         </foreach>

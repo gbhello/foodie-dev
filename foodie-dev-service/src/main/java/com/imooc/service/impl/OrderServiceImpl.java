@@ -4,7 +4,7 @@ import com.imooc.consts.YesOrNo;
 import com.imooc.mapper.OrderItemsMapper;
 import com.imooc.pojo.*;
 import com.imooc.pojo.bo.SubmitOrderBO;
-import com.imooc.pojo.vo.ItemSpecItemNameVO;
+import com.imooc.pojo.vo.ItemSpecIdItemNameVO;
 import com.imooc.pojo.vo.OrderVO;
 import com.imooc.service.AddressService;
 import com.imooc.service.ItemService;
@@ -51,6 +51,7 @@ public class OrderServiceImpl implements OrderService {
 
         //2.循环根据itemSpecIds保存订单商品信息表
         String[] itemSpecIdArr = itemSpecIds.split(",");
+        List<String> itemSpecIdList = Arrays.asList(itemSpecIdArr);
         // 商品原价累计
         Integer totalAmount = 0;
         //优惠后的实际支付价格累计
@@ -59,7 +60,7 @@ public class OrderServiceImpl implements OrderService {
         int buyCounts = 1;
 
 
-        List<ItemsSpec> itemsSpecList = itemService.getItemSpecBySpecIdList(Arrays.asList(itemSpecIdArr));
+        List<ItemsSpec> itemsSpecList = itemService.getItemSpecBySpecIdList(itemSpecIdList);
         for (ItemsSpec itemsSpec : itemsSpecList) {
             totalAmount += itemsSpec.getPriceNormal() * buyCounts;
             realPayAmount += itemsSpec.getPriceDiscount() * buyCounts;
@@ -67,9 +68,8 @@ public class OrderServiceImpl implements OrderService {
 
         List<String> itemIdList = itemsSpecList.stream().map(ItemsSpec::getItemId).collect(Collectors.toList());
 
-        List<Items> itemList = itemService.getItemByIdList(itemIdList);
-        ItemSpecItemNameVO itemSpecItemNameVO = itemService.getItemSpecItemNameVO(Arrays.asList(itemSpecIdArr));
-        List<String> mainImgUrlList = itemService.getItemMainImgByItemIdList(itemIdList);
+        List<ItemSpecIdItemNameVO> itemSpecIdItemNameVOList = itemService.getItemSpecItemNameVO(itemSpecIdList);
+        List<String> mainImgUrlList = itemService.getItemMainImgByItemSpecIdList(itemSpecIdList);
 
         ArrayList<OrderItems> orderItemList = new ArrayList<>();
         for (int i = 0; i < itemsSpecList.size(); i++) {
@@ -79,7 +79,7 @@ public class OrderServiceImpl implements OrderService {
             subOrderItem.setId(subOrderId);
             subOrderItem.setOrderId(orderId);
             subOrderItem.setItemId(itemIdList.get(i));
-            subOrderItem.setItemName(itemList.get(i).getItemName());
+            subOrderItem.setItemName(itemSpecIdItemNameVOList.get(i).getItemName());
             subOrderItem.setItemImg(mainImgUrlList.get(i));
             subOrderItem.setBuyCounts(buyCounts);
             subOrderItem.setItemSpecId(itemsSpecList.get(i).getItemId());

@@ -19,5 +19,5 @@ public interface ItemsImgMapper extends MyMapper<ItemsImg> {
      * @param itemIdList
      * @return
      */
-    List<String> selectMainImgUrlByItemIdList(@Param("itemIdList") List<String> itemIdList);
+    List<String> selectMainImgUrlByItemSpecIdList(@Param("itemIdList") List<String> itemIdList);
 }

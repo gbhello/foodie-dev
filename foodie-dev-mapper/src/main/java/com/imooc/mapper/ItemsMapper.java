@@ -3,7 +3,7 @@ package com.imooc.mapper;
 import com.imooc.mapper.base.MyMapper;
 import com.imooc.pojo.Items;
 import com.imooc.pojo.vo.ItemCommentVO;
-import com.imooc.pojo.vo.ItemSpecItemNameVO;
+import com.imooc.pojo.vo.ItemSpecIdItemNameVO;
 import com.imooc.pojo.vo.SearchItemsVO;
 import com.imooc.pojo.vo.ShopCartVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -52,14 +52,6 @@ public interface ItemsMapper extends MyMapper<Items> {
     List<ShopCartVO> getItemsBySpecIdList(@Param("specIdList") ArrayList<String> specIdList);
 
     /**
-     * 根据商品id里列表获取商品列表
-     *
-     * @param itemIdList
-     * @return
-     */
-    List<Items> selectItemByIdList(@Param("itemIdList") List<String> itemIdList);
-
-    /**
      * 减少商品库存
      *
      * @param itemSpecIdStockMap
@@ -79,5 +71,5 @@ public interface ItemsMapper extends MyMapper<Items> {
      * @param itemSpecIdList
      * @return
      */
-    ItemSpecItemNameVO selectItemSpecItemName(@Param("itemSpecIdList") List<String> itemSpecIdList);
+    List<ItemSpecIdItemNameVO> selectItemSpecItemName(@Param("itemSpecIdList") List<String> itemSpecIdList);
 }

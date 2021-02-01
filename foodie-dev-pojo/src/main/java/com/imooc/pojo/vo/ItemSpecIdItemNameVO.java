@@ -7,7 +7,7 @@ import lombok.Data;
  * @date 2021/1/31
  */
 @Data
-public class ItemSpecItemNameVO {
+public class ItemSpecIdItemNameVO {
     private String itemSpecId;
     private String itemName;
 }

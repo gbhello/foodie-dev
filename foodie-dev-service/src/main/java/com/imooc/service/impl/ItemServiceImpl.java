@@ -135,14 +135,10 @@ public class ItemServiceImpl implements ItemService {
         return itemsSpecMapper.getItemSpecBySpecIdList(itemSpecIdList);
     }
 
-    @Override
-    public List<Items> getItemByIdList(List<String> itemIdList) {
-        return itemsMapper.selectItemByIdList(itemIdList);
-    }
 
     @Override
-    public List<String> getItemMainImgByItemIdList(List<String> itemIdList) {
-        return itemsImgMapper.selectMainImgUrlByItemIdList(itemIdList);
+    public List<String> getItemMainImgByItemSpecIdList(List<String> itemSpecIdList) {
+        return itemsImgMapper.selectMainImgUrlByItemSpecIdList(itemSpecIdList);
     }
 
     @Override
@@ -155,7 +151,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemSpecItemNameVO getItemSpecItemNameVO(List<String> itemSpecIdList) {
+    public List<ItemSpecIdItemNameVO> getItemSpecItemNameVO(List<String> itemSpecIdList) {
         return itemsMapper.selectItemSpecItemName(itemSpecIdList);
     }
 

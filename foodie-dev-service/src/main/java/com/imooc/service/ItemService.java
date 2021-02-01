@@ -5,7 +5,7 @@ import com.imooc.pojo.ItemsImg;
 import com.imooc.pojo.ItemsParam;
 import com.imooc.pojo.ItemsSpec;
 import com.imooc.pojo.vo.CommentLevelCountsVO;
-import com.imooc.pojo.vo.ItemSpecItemNameVO;
+import com.imooc.pojo.vo.ItemSpecIdItemNameVO;
 import com.imooc.pojo.vo.ShopCartVO;
 import com.imooc.utils.PagedGridResult;
 
@@ -107,20 +107,12 @@ public interface ItemService {
     List<ItemsSpec> getItemSpecBySpecIdList(List<String> itemSpecIdList);
 
     /**
-     * 根据商品id列表获取商品列表
-     *
-     * @param itemIdList
-     * @return
-     */
-    List<Items> getItemByIdList(List<String> itemIdList);
-
-    /**
      * 根据id列表获取商品主图片集合
      *
      * @param itemIdList
      * @return
      */
-    List<String> getItemMainImgByItemIdList(List<String> itemIdList);
+    List<String> getItemMainImgByItemSpecIdList(List<String> itemIdList);
 
     /**
      * 更新商品库存
@@ -135,5 +127,5 @@ public interface ItemService {
      * @param itemSpecIdList
      * @return
      */
-    ItemSpecItemNameVO getItemSpecItemNameVO(List<String> itemSpecIdList);
+    List<ItemSpecIdItemNameVO> getItemSpecItemNameVO(List<String> itemSpecIdList);
 }
