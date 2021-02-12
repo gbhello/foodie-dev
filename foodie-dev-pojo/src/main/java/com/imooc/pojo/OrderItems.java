@@ -3,7 +3,6 @@ package com.imooc.pojo;
 import lombok.Data;
 
 import javax.persistence.Column;
-import javax.persistence.Id;
 import javax.persistence.Table;
 /**
  * @author gengbin
@@ -15,7 +14,7 @@ public class OrderItems {
     /**
      * 主键id
      */
-    @Id
+    @Column(name = "id")
     private String id;
 
     /**

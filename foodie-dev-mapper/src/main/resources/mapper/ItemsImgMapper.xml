@@ -18,7 +18,7 @@
         FROM items_img AS ii
         LEFT JOIN items_spec AS spec
         ON ii.item_id = spec.item_id
-        WHERE ii.is_main = 1 AND spec.item_id IN
+        WHERE ii.is_main = 1 AND spec.id IN
         <foreach collection="itemIdList" separator="," item="itemId" open="(" close=")" index="index">
             #{itemId}
         </foreach>

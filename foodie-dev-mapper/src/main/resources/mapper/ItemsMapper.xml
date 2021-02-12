@@ -16,8 +16,8 @@
         <result column="content" property="content" jdbcType="LONGVARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id,item_name,cat_id,root_cat_id,sell_counts,on_off_status,created_time,updated_time,content
-  </sql>
+        id,item_name,cat_id,root_cat_id,sell_counts,on_off_status,created_time,updated_time,content
+    </sql>
     <update id="decreaseItemSpecStock">
         UPDATE
         items_spec
@@ -133,7 +133,7 @@
     <select id="selectItemSpecItemName" resultType="com.imooc.pojo.vo.ItemSpecIdItemNameVO">
         SELECT
         spec.id AS itemSpecId,
-        i.item_name AS itemName,
+        i.item_name AS itemName
         FROM items_spec AS spec
         LEFT JOIN items AS i
         ON spec.item_id = i.id

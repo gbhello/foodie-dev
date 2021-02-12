@@ -36,6 +36,25 @@ public abstract class BusinessConsts {
      */
     public static final int MAX_RECEIVER_LENGTH = 12;
 
+
+    /**
+     * 支付回调地址
+     */
+    public static final String PAY_RETURN_URL = "http://api.z.mukewang.com/foodie-dev-api/orders/notifyMerchantOrderPaid";
+    /**
+     * 支付中心调用地址
+     */
+    public static final String PAYMENT_URL = "http://payment.t.mukewang.com/foodie-payment/payment/createMerchantOrder";
+    /**
+     * 增加库存类型
+     */
+    public static final Integer INCREASE_ITEM_SPEC_STOCK_TYPE = 1;
+    /**
+     * 减少库存类型
+     */
+    public static final Integer DECREASE_ITEM_SPEC_STOCK_TYPE = 0;
+
+
     public static class Order {
         public static final String UNSUPPORT_PAY_TYPE = "支付方式不支持！";
         public static final Integer INCRESE_ITEM_SPEC_STOCK = 1;

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.imooc.consts.StatusCodeConsts;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 自定义响应数据结构
@@ -13,6 +14,7 @@ import lombok.Data;
  * @date 2021/1/14
  */
 @Data
+@NoArgsConstructor
 public class CommonResult {
     /**
      * 定义jackson对象

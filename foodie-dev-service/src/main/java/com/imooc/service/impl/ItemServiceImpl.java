@@ -2,6 +2,7 @@ package com.imooc.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.imooc.consts.BusinessConsts;
 import com.imooc.enums.CommentLevel;
 import com.imooc.mapper.*;
 import com.imooc.pojo.*;
@@ -13,7 +14,10 @@ import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author gengbin
@@ -143,9 +147,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void updateItemSpecStock(HashMap<String, Integer> itemSpecIdStockMap, Integer updateType) {
-        if (updateType == 1) {
+        if (updateType.equals(BusinessConsts.INCREASE_ITEM_SPEC_STOCK_TYPE)) {
             itemsMapper.increaseItemSpecStock(itemSpecIdStockMap);
-        } else {
+        } else if (updateType.equals(BusinessConsts.DECREASE_ITEM_SPEC_STOCK_TYPE)) {
             itemsMapper.decreaseItemSpecStock(itemSpecIdStockMap);
         }
     }
