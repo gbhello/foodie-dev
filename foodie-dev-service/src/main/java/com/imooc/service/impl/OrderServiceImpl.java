@@ -171,6 +171,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
+    @Override
     public void closeOrder() {
         //查询所有未付款订单，判断时间是否超过1天，超时则关闭
         OrderStatus orderStatus = new OrderStatus();
@@ -191,5 +192,14 @@ public class OrderServiceImpl implements OrderService {
 
     private void doCloseOrder(ArrayList<String> orderIdList) {
         orderStatusMapper.updateTimeoutOrderStatus(orderIdList);
+    }
+
+    @Override
+    public Orders getMyOrder(String userId, String orderId) {
+        Orders order = new Orders();
+        order.setUserId(userId);
+        order.setId(orderId);
+        order.setIsDelete(YesOrNo.NO.type);
+        return ordersMapper.selectOne(order);
     }
 }

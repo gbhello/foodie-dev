@@ -1,0 +1,14 @@
+server:
+  port: 8088
+  servlet:
+    context-path:
+
+spring:
+  datasource:                                           # 数据源的相关配置
+    url: jdbc:mysql://121.42.13.121:3306/foodie-shop-dev?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
+    username: root
+    password: Ml629261
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

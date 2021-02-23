@@ -5,12 +5,14 @@ server:
   max-http-header-size: 80KB
 # datasource
 spring:
+  profiles:
+    active: dev
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://121.42.13.121:3306/foodie-shop-dev?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
-    username: root
-    password: Ml629261
+    #    url: jdbc:mysql://121.42.13.121:3306/foodie-shop-dev?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
+    #    username: root
+    #    password: Ml629261
     hikari:
       connection-timeout: 30000
       minimum-idle: 5
@@ -25,5 +27,5 @@ spring:
 mybatis:
   type-aliases-package: com.imooc.pojo
   mapper-locations: classpath:mapper/*.xml
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

@@ -1,6 +1,7 @@
 package com.imooc.pojo;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -10,6 +11,7 @@ import java.util.Date;
  * @date 2021/1/14
  */
 @Data
+@ToString
 public class Users {
     /**
      * 主键id 用户id

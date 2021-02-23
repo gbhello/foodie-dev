@@ -54,6 +54,7 @@ public class UserServiceImpl implements UserService {
         Users user = new Users();
         user.setUsername(username);
         user.setPassword(MD5Utils.getMD5Str(password));
+        user = usersMapper.selectOne(user);
 
         return user;
     }
