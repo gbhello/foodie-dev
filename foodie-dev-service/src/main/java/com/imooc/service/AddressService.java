@@ -35,9 +35,9 @@ public interface AddressService {
     /**
      * 删除地址
      *
-     * @param userId
+     * @param addressId
      */
-    void deleteAddress(String userId);
+    void deleteAddress(String addressId);
 
     /**
      * 根据addressId获取地址信息
@@ -46,4 +46,12 @@ public interface AddressService {
      * @return
      */
     UserAddress getUserAddress(String addressId);
+
+    /**
+     * 更新地址为默认地址
+     *
+     * @param userId
+     * @param addressId
+     */
+    void updateUserAddressToBeDefault(String userId, String addressId);
 }

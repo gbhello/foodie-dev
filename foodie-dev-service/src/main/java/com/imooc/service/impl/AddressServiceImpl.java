@@ -1,5 +1,6 @@
 package com.imooc.service.impl;
 
+import com.imooc.consts.YesOrNo;
 import com.imooc.mapper.UserAddressMapper;
 import com.imooc.pojo.UserAddress;
 import com.imooc.pojo.bo.AddressBO;
@@ -68,9 +69,9 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public void deleteAddress(String userId) {
+    public void deleteAddress(String addressId) {
         UserAddress userAddress = new UserAddress();
-
+        userAddress.setId(addressId);
         userAddressMapper.deleteByPrimaryKey(userAddress);
     }
 
@@ -80,5 +81,29 @@ public class AddressServiceImpl implements AddressService {
         userAddress.setId(addressId);
 
         return userAddressMapper.selectByPrimaryKey(addressId);
+    }
+
+    /**
+     * 更新地址为默认地址
+     *
+     * @param userId
+     * @param addressId
+     */
+    @Override
+    public void updateUserAddressToBeDefault(String userId, String addressId) {
+        //1.查找默认地址，设置为不默认
+        UserAddress queryAddress = new UserAddress();
+        queryAddress.setUserId(userId);
+        queryAddress.setIsDefault(YesOrNo.YES.type);
+        UserAddress userAddress = userAddressMapper.selectOne(queryAddress);
+        userAddress.setIsDefault(YesOrNo.NO.type);
+        userAddressMapper.updateByPrimaryKeySelective(userAddress);
+
+        //2.根据地址id设置为默认的地址
+        UserAddress defaultAddress = new UserAddress();
+        defaultAddress.setId(addressId);
+        defaultAddress.setUserId(userId);
+        defaultAddress.setIsDefault(YesOrNo.YES.type);
+        userAddressMapper.updateByPrimaryKeySelective(defaultAddress);
     }
 }

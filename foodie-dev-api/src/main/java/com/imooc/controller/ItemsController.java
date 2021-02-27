@@ -47,9 +47,9 @@ public class ItemsController {
 
         ItemInfoVO itemInfoVO = new ItemInfoVO();
         itemInfoVO.setItem(item);
-        itemInfoVO.setItemsImgList(itemsImgList);
-        itemInfoVO.setItemsSpecList(itemsSpecList);
-        itemInfoVO.setItemsParam(itemParam);
+        itemInfoVO.setItemImgList(itemsImgList);
+        itemInfoVO.setItemSpecList(itemsSpecList);
+        itemInfoVO.setItemParams(itemParam);
 
         return CommonResult.ok(itemInfoVO);
     }
@@ -68,8 +68,8 @@ public class ItemsController {
     @RequestMapping("/getComment")
     public CommonResult getComment(@ApiParam(name = "itemId", value = "商品id", required = true) @RequestParam String itemId,
                                    @ApiParam(name = "level", value = "评价等级", required = false) @RequestParam Integer level,
-                                   @ApiParam(name = "pageNum", value = "商品id", required = true) @RequestParam Integer pageNum,
-                                   @ApiParam(name = "pageSize", value = "商品id", required = true) @RequestParam Integer pageSize) {
+                                   @ApiParam(name = "pageNum", value = "页码", required = true) @RequestParam Integer pageNum,
+                                   @ApiParam(name = "pageSize", value = "页数", required = true) @RequestParam Integer pageSize) {
         if (StringUtils.isBlank(itemId)) {
             return CommonResult.errorMsg(ValidationErrorCode.PARAM_EMPTY);
         }

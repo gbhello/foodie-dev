@@ -75,13 +75,15 @@ public class OrdersController {
         return CommonResult.ok(orderId);
     }
 
+    @ApiOperation(value = "通知订单支付成功", httpMethod = "GET")
     @PostMapping("notifyMerchantOrderPaid")
     public Integer notifyMerchantOrderPaid(@RequestParam String merchantOrderId) {
         orderService.updateOrderStatus(merchantOrderId, OrderStatusEnum.WAIT_DELIVER.type);
         return HttpStatus.OK.value();
     }
 
-    @PostMapping("getPaidOrderInfo")
+    @ApiOperation(value = "获取订单支付状态", httpMethod = "GET")
+    @GetMapping("getPaidOrderInfo")
     public CommonResult getPaidOrderInfo(String orderId) {
         OrderStatus orderStatus = orderService.getOrderStatusInfo(orderId);
         return CommonResult.ok(orderStatus);

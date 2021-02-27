@@ -68,6 +68,16 @@ public class AddressController {
         return CommonResult.ok();
     }
 
+    @ApiOperation(value = "设置默认地址", httpMethod = "POST")
+    @PostMapping("setDefaultAddress")
+    public CommonResult setDefaultAddress(@RequestParam String userId, @RequestParam String addressId) {
+        if (StringUtils.isBlank(userId) || StringUtils.isBlank(addressId)) {
+            return CommonResult.errorMsg(ValidationErrorCode.PARAM_EMPTY);
+        }
+        addressService.updateUserAddressToBeDefault(userId, addressId);
+        return CommonResult.ok();
+    }
+
     private CommonResult checkAddress(AddressBO addressBO) {
         String receiver = addressBO.getReceiver();
         if (StringUtils.isBlank(receiver)) {

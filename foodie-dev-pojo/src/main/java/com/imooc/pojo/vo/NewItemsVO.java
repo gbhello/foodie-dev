@@ -10,11 +10,11 @@ import java.util.List;
  */
 @Data
 public class NewItemsVO {
-    private Integer rootCategoryId;
-    private String rootCategoryName;
+    private Integer rootCatId;
+    private String rootCatName;
     private String slogan;
-    private String categoryImage;
-    private String backgroundColor;
+    private String catImage;
+    private String bgColor;
 
-    private List<SimpleItemVO> simpleItemVOList;
+    private List<SimpleItemVO> simpleItemList;
 }
